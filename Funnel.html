@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>스터핑 퍼널 교체관리</title>
+
+<style>
+:root {
+    --navy: #073763;
+    --blue: #0878c9;
+    --green: #17804c;
+    --yellow: #ad6800;
+    --red: #c62828;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #172033;
+    --gray: #667085;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #e9eef5;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+    color: var(--text);
+}
+
+.app {
+    max-width: 620px;
+    min-height: 100vh;
+    margin: auto;
+    background: var(--bg);
+}
+
+/* HEADER */
+
+header {
+    background: var(--navy);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header small {
+    opacity: 0.75;
+    font-size: 10px;
+}
+
+header h1 {
+    margin: 4px 0 0;
+    font-size: 21px;
+}
+
+/* BUTTON */
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary {
+    background: var(--blue);
+    color: white;
+}
+
+.green-button {
+    background: var(--green);
+    color: white;
+}
+
+.secondary {
+    background: #eaf4fc;
+    color: #075a9c;
+}
+
+/* MAIN */
+
+main {
+    padding: 14px;
+}
+
+/* SUMMARY */
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.summary div {
+    background: white;
+    border: 1px solid #dde5ee;
+    border-radius: 13px;
+    text-align: center;
+    padding: 12px 5px;
+}
+
+.summary b {
+    display: block;
+    font-size: 20px;
+}
+
+.summary span {
+    font-size: 11px;
+    color: var(--gray);
+}
+
+/* CARD */
+
+h2 {
+    font-size: 15px;
+    margin: 20px 2px 10px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid #dde5ee;
+    border-radius: 13px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.name {
+    font-weight: 800;
+}
+
+.sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 5px;
+}
+
+/* STATUS */
+
+.pill {
+    font-size: 11px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    font-weight: bold;
+    background: #daf5e5;
+    color: var(--green);
+}
+
+.pill.warn {
+    background: #fff0cc;
+    color: var(--yellow);
+}
+
+.pill.due {
+    background: #fde1e1;
+    color: var(--red);
+}
+
+/* DETAIL */
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.field {
+    background: #f2f6fa;
+    padding: 11px;
+    border-radius: 9px;
+}
+
+.field small {
+    display: block;
+    font-size: 10px;
+    color: var(--gray);
+    margin-bottom: 5px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.banner {
+    background: #daf5e5;
+    color: #12683e;
+    text-align: center;
+    padding: 11px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* INPUT */
+
+.input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccd5df;
+    border-radius: 9px;
+    margin: 7px 0 10px;
+}
+
+.message {
+    min-height: 22px;
+    margin-top: 9px;
+    font-size: 12px;
+    color: var(--green);
+}
+
+/* INFO */
+
+.info {
+    margin-top: 15px;
+    padding: 12px;
+    background: #eef6ff;
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 450px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+    <div>
+        <small>QR REPLACEMENT MANAGEMENT</small>
+        <h1>스터핑 퍼널 교체관리</h1>
+    </div>
+
+    <button
+        id="qrButton"
+        class="primary"
+        type="button">
+        QR 입력
+    </button>
+
+</header>
+
+
+<main>
+
+<!-- ================================================= -->
+<!-- SUMMARY -->
+<!-- ================================================= -->
+
+<section class="summary">
+
+    <div>
+        <b>2</b>
+        <span>관리 설비</span>
+    </div>
+
+    <div>
+        <b>6개월</b>
+        <span>교체주기</span>
+    </div>
+
+    <div>
+        <b id="activeCount">0</b>
+        <span>QR 활성화</span>
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- HOME -->
+<!-- ================================================= -->
+
+<section id="home">
+
+    <h2>퍼널 현황</h2>
+
+    <div id="equipmentList"></div>
+
+    <div class="info">
+
+        QR 관리 ID
+
+        <br>
+
+        <b>스터핑 1호기</b><br>
+        STF-01-FUNNEL-01
+
+        <br><br>
+
+        <b>스터핑 2호기</b><br>
+        STF-02-FUNNEL-01
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- QR TEST -->
+<!-- ================================================= -->
+
+<section
+    id="qrView"
+    class="hidden">
+
+    <h2>QR 설비 활성화</h2>
+
+    <div class="card">
+
+        <label>
+            QR Asset ID
+        </label>
+
+        <input
+            id="assetInput"
+            class="input"
+            value="STF-01-FUNNEL-01"
+        >
+
+        <button
+            id="activateButton"
+            class="primary"
+            type="button"
+            style="width:100%">
+            QR 설비 활성화
+        </button>
+
+        <div
+            id="qrMessage"
+            class="message">
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="sub">
+            빠른 테스트
+        </div>
+
+        <br>
+
+        <button
+            type="button"
+            class="secondary quick"
+            data-id="STF-01-FUNNEL-01">
+            스터핑 1호기
+        </button>
+
+        <button
+            type="button"
+            class="secondary quick"
+            data-id="STF-02-FUNNEL-01">
+            스터핑 2호기
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- DETAIL -->
+<!-- ================================================= -->
+
+<section
+    id="detailView"
+    class="hidden">
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+/* ====================================================
+   스터핑 퍼널 관리 데이터
+==================================================== */
+
+const equipment = [
+
+    {
+        id: "STF-01-FUNNEL-01",
+
+        machine: "Auto Stuffing #1",
+
+        part: "퍼널 / 퍼널링",
+
+        cycleMonths: 6,
+
+        lastReplacement: "2026-06-10",
+
+        active: false
+    },
+
+    {
+        id: "STF-02-FUNNEL-01",
+
+        machine: "Auto Stuffing #2",
+
+        part: "퍼널 / 퍼널링",
+
+        cycleMonths: 6,
+
+        lastReplacement: "2026-05-01",
+
+        active: false
+    }
+
+];
+
+
+/* ====================================================
+   DOM
+==================================================== */
+
+const home =
+    document.getElementById("home");
+
+const qrView =
+    document.getElementById("qrView");
+
+const detailView =
+    document.getElementById("detailView");
+
+const equipmentList =
+    document.getElementById("equipmentList");
+
+const activeCount =
+    document.getElementById("activeCount");
+
+const qrMessage =
+    document.getElementById("qrMessage");
+
+
+/* ====================================================
+   날짜 함수
+==================================================== */
+
+function addMonths(dateString, months) {
+
+    const date =
+        new Date(dateString + "T00:00:00");
+
+    date.setMonth(
+        date.getMonth() + months
+    );
+
+    return date;
+}
+
+
+function formatDate(date) {
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+function remainingDays(date) {
+
+    const today =
+        new Date();
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+    return Math.ceil(
+        (date - today) / 86400000
+    );
+}
+
+
+/* ====================================================
+   상태 계산
+==================================================== */
+
+function getStatus(item) {
+
+    const next =
+        addMonths(
+            item.lastReplacement,
+            item.cycleMonths
+        );
+
+    const remain =
+        remainingDays(next);
+
+    /*
+       정상         : 31일 이상
+       사전점검     : 1~30일
+       교체필요     : 예정일 초과
+    */
+
+    if (remain < 0)
+        return "due";
+
+    if (remain <= 30)
+        return "warn";
+
+    return "ok";
+}
+
+
+function getRemainingText(item) {
+
+    const next =
+        addMonths(
+            item.lastReplacement,
+            item.cycleMonths
+        );
+
+    const remain =
+        remainingDays(next);
+
+    if (remain < 0) {
+
+        return (
+            Math.abs(remain)
+            + "일 초과"
+        );
+    }
+
+    return remain + "일 남음";
+}
+
+
+function getStatusName(item) {
+
+    const status =
+        getStatus(item);
+
+    if (status === "due")
+        return "교체 필요";
+
+    if (status === "warn")
+        return "사전 점검";
+
+    return "정상";
+}
+
+
+/* ====================================================
+   메인 화면
+==================================================== */
+
+function renderHome() {
+
+    equipmentList.innerHTML = "";
+
+    equipment.forEach(
+        function(item, index) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "card";
+
+
+            card.innerHTML = `
+
+                <div class="row">
+
+                    <div>
+
+                        <div class="name">
+                            ${item.machine}
+                        </div>
+
+                        <div class="sub">
+                            ${item.part}
+                            ·
+                            ${item.id}
+                        </div>
+
+                    </div>
+
+                    <span class="pill ${getStatus(item)}">
+
+                        ${getRemainingText(item)}
+
+                    </span>
+
+                </div>
+
+
+                <div class="sub">
+
+                    최근 교체:
+                    ${item.lastReplacement}
+
+                    ·
+
+                    주기:
+                    ${item.cycleMonths}개월
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="secondary detailButton"
+                    data-index="${index}"
+                    style="margin-top:10px">
+
+                    상세보기
+
+                </button>
+
+            `;
+
+
+            equipmentList.appendChild(
+                card
+            );
+        }
+    );
+
+
+    document
+        .querySelectorAll(
+            ".detailButton"
+        )
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        openDetail(
+                            Number(
+                                button.dataset.index
+                            )
+                        );
+                    }
+                );
+            }
+        );
+
+
+    updateActiveCount();
+}
+
+
+/* ====================================================
+   QR 활성화
+==================================================== */
+
+function activateAsset(assetID) {
+
+    const normalizedID =
+        assetID
+            .trim()
+            .toUpperCase();
+
+
+    const index =
+        equipment.findIndex(
+            function(item) {
+
+                return (
+                    item.id === normalizedID
+                );
+            }
+        );
+
+
+    if (index === -1) {
+
+        qrMessage.style.color =
+            "#c62828";
+
+        qrMessage.textContent =
+            "등록되지 않은 QR Asset ID입니다.";
+
+        return;
+    }
+
+
+    /* 기존 활성 상태 해제 */
+
+    equipment.forEach(
+        function(item) {
+
+            item.active = false;
+        }
+    );
+
+
+    /* QR 설비 활성화 */
+
+    equipment[index].active =
+        true;
+
+
+    updateActiveCount();
+
+    openDetail(index);
+}
+
+
+/* ====================================================
+   상세 화면
+==================================================== */
+
+function openDetail(index) {
+
+    const item =
+        equipment[index];
+
+
+    home.classList.add(
+        "hidden"
+    );
+
+    qrView.classList.add(
+        "hidden"
+    );
+
+    detailView.classList.remove(
+        "hidden"
+    );
+
+
+    const nextReplacement =
+        addMonths(
+            item.lastReplacement,
+            item.cycleMonths
+        );
+
+
+    const activationBanner =
+        item.active
+        ?
+        `
+        <div class="banner">
+
+            ✓ QR 확인 완료 · 설비 활성화
+
+        </div>
+        `
+        :
+        "";
+
+
+    detailView.innerHTML = `
+
+        ${activationBanner}
+
+        <h2>
+            설비 상세
+        </h2>
+
+
+        <div class="card">
+
+
+            <div class="row">
+
+                <div>
+
+                    <div class="name">
+
+                        ${item.machine}
+
+                    </div>
+
+                    <div class="sub">
+
+                        ${item.id}
+
+                    </div>
+
+                </div>
+
+
+                <span
+                    class="pill ${getStatus(item)}">
+
+                    ${getStatusName(item)}
+
+                </span>
+
+            </div>
+
+
+            <div class="grid">
+
+
+                <div class="field">
+
+                    <small>
+                        관리 대상
+                    </small>
+
+                    ${item.part}
+
+                </div>
+
+
+                <div class="field">
+
+                    <small>
+                        교체주기
+                    </small>
+
+                    ${item.cycleMonths}개월
+
+                </div>
+
+
+                <div class="field">
+
+                    <small>
+                        최근 교체일
+                    </small>
+
+                    ${item.lastReplacement}
+
+                </div>
+
+
+                <div class="field">
+
+                    <small>
+                        다음 교체일
+                    </small>
+
+                    ${formatDate(
+                        nextReplacement
+                    )}
+
+                </div>
+
+
+                <div class="field">
+
+                    <small>
+                        남은 기간
+                    </small>
+
+                    ${getRemainingText(item)}
+
+                </div>
+
+
+                <div class="field">
+
+                    <small>
+                        관리상태
+                    </small>
+
+                    ${getStatusName(item)}
+
+                </div>
+
+
+            </div>
+
+
+            <div class="actions">
+
+
+                <button
+                    id="backButton"
+                    class="secondary"
+                    type="button">
+
+                    현황으로
+
+                </button>
+
+
+                <button
+                    id="completeButton"
+                    class="green-button"
+                    type="button"
+                    ${item.active ? "" : "disabled"}>
+
+                    교체 완료
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="completeMessage"
+                class="message">
+            </div>
+
+
+        </div>
+
+
+        ${
+            !item.active
+            ?
+            `
+            <div class="info">
+
+                교체 완료 처리는
+                QR로 해당 설비를
+                활성화한 경우에만 가능합니다.
+
+            </div>
+            `
+            :
+            ""
+        }
+
+    `;
+
+
+    document
+        .getElementById(
+            "backButton"
+        )
+        .addEventListener(
+            "click",
+            showHome
+        );
+
+
+    document
+        .getElementById(
+            "completeButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                completeReplacement(
+                    index
+                );
+            }
+        );
+}
+
+
+/* ====================================================
+   교체 완료
+==================================================== */
+
+function completeReplacement(index) {
+
+    const item =
+        equipment[index];
+
+
+    if (!item.active)
+        return;
+
+
+    const today =
+        new Date();
+
+
+    /*
+       교체 완료 시
+       최근 교체일 = 오늘
+    */
+
+    item.lastReplacement =
+        formatDate(today);
+
+
+    const next =
+        addMonths(
+            item.lastReplacement,
+            item.cycleMonths
+        );
+
+
+    const message =
+        document.getElementById(
+            "completeMessage"
+        );
+
+
+    message.innerHTML = `
+
+        ✓ 교체 완료 처리되었습니다.
+
+        <br>
+
+        최근 교체일:
+        ${item.lastReplacement}
+
+        <br>
+
+        다음 교체예정일:
+        ${formatDate(next)}
+
+    `;
+
+
+    /*
+       실제 운영버전에서는 이 부분에서
+       SharePoint / Microsoft Lists에
+       기록을 저장하면 됩니다.
+    */
+
+    renderHome();
+}
+
+
+/* ====================================================
+   화면 이동
+==================================================== */
+
+function showHome() {
+
+    qrView.classList.add(
+        "hidden"
+    );
+
+    detailView.classList.add(
+        "hidden"
+    );
+
+    home.classList.remove(
+        "hidden"
+    );
+
+    renderHome();
+}
+
+
+function showQR() {
+
+    home.classList.add(
+        "hidden"
+    );
+
+    detailView.classList.add(
+        "hidden"
+    );
+
+    qrView.classList.remove(
+        "hidden"
+    );
+
+    qrMessage.textContent = "";
+}
+
+
+/* ====================================================
+   활성 설비 숫자
+==================================================== */
+
+function updateActiveCount() {
+
+    activeCount.textContent =
+        equipment.filter(
+            function(item) {
+
+                return item.active;
+            }
+        ).length;
+}
+
+
+/* ====================================================
+   BUTTON EVENTS
+==================================================== */
+
+document
+    .getElementById(
+        "qrButton"
+    )
+    .addEventListener(
+        "click",
+        showQR
+    );
+
+
+document
+    .getElementById(
+        "activateButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            const value =
+                document
+                    .getElementById(
+                        "assetInput"
+                    )
+                    .value;
+
+            activateAsset(value);
+        }
+    );
+
+
+document
+    .querySelectorAll(
+        ".quick"
+    )
+    .forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    activateAsset(
+                        button.dataset.id
+                    );
+                }
+            );
+        }
+    );
+
+
+/* ====================================================
+   QR DEEP LINK
+==================================================== */
+
+/*
+    아래 주소처럼 HTML을 실행하면
+
+    stuffing_qr_management.html
+    ?asset=STF-01-FUNNEL-01
+
+    URL의 asset 값을 자동으로 읽고
+    해당 설비를 활성화합니다.
+*/
+
+const urlParameters =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const assetParameter =
+    urlParameters.get(
+        "asset"
+    );
+
+
+/* ====================================================
+   APP START
+==================================================== */
+
+renderHome();
+
+
+if (assetParameter) {
+
+    activateAsset(
+        assetParameter
+    );
+}
+
+</script>
+
+</body>
+</html>
